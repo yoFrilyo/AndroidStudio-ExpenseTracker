@@ -60,7 +60,25 @@ public class Expense implements Parcelable{
 
     public String getLabel() {return label;}
     public int getCost() {return cost;}
-    public String getCostString() {return "$" + String.valueOf(cost);}
+    public String getCostString()
+    {
+        float result = cost / 100;
+        return String.format("$%.2f", result);
+    }
+
+    public String getCostStringWithoutDollarSign()
+    {
+        float result = cost / 100;
+        return String.format("%.2f", result);
+    }
+
+    public Date getDate() {return date;}
+
+    public String getDateStr() {return date.getString();}
+
+    public String getReason() {return reason;}
+
+    public String getNotes() {return notes;}
 
 
 
@@ -69,7 +87,7 @@ public class Expense implements Parcelable{
 
         String input = COST.getText().toString().trim();
         float dollarAmount = Float.parseFloat(input);
-        cents = (int) dollarAmount * 100;
+        cents = (int) (dollarAmount * 100);
 
         return cents;
     }

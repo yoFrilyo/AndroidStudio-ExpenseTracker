@@ -52,37 +52,67 @@ public class Date implements Parcelable {
     public String getMonthString()
     {
         switch (month) {
-            case 1:
+            case 0:
                 return "JAN";
-            case 2:
+            case 1:
                 return "FEB";
-            case 3:
+            case 2:
                 return "MAR";
-            case 4:
+            case 3:
                 return "APR";
-            case 5:
+            case 4:
                 return "MAY";
-            case 6:
+            case 5:
                 return "JUN";
-            case 7:
+            case 6:
                 return "JUL";
-            case 8:
+            case 7:
                 return "AUG";
-            case 9:
+            case 8:
                 return "SEP";
-            case 10:
+            case 9:
                 return "OCT";
-            case 11:
+            case 10:
                 return "NOV";
-            case 12:
+            case 11:
                 return "DEC";
             default:
                 return "MONTH";
         }
     }
 
+
+
     public String getString()
     {
-        return getMonthString() + " " + day + " " + year;
+        return getMonthString() + "/" + day + "/" + year;
+    }
+
+
+
+    public String hashByMonth()
+    {
+        return getMonthString() + "/" + year;
+    }
+
+
+
+    public boolean sameDay(Date date)
+    {
+        return this.day ==  date.day && this.month == date.month && this.year == date.year;
+    }
+
+
+
+    public boolean sameMonth(Date date)
+    {
+        return this.month == date.month && this.year == date.year;
+    }
+
+
+
+    public boolean sameYear(Date date)
+    {
+        return this.year == date.year;
     }
 }
