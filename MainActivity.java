@@ -1,7 +1,10 @@
 package com.example.assignment2;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -26,12 +29,16 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int REQUEST_CODE_ADD_EXPENSE = 1;
     private static final int REQUEST_CODE_EDIT_EXPENSE = 2;
+
+
+
     private RecyclerView recyclerView;
     private ExpenseAdapter expenseAdapter;
-
     private TextView total, dailyAverage, monthlyTotal;
     private ImageButton addButton;
     private List<Expense> expenseList;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,9 +49,11 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         addButton = findViewById(R.id.add_button_id);
 
-        expenseList = new ArrayList<>();
+        expenseList = PreferenceManager.loadExpenses(this);
+
         expenseAdapter = new ExpenseAdapter(expenseList);
         recyclerView.setAdapter(expenseAdapter);
+        generateRecyclerView();
         updateExpenses();
 
         addButton.setOnClickListener(new View.OnClickListener() {
@@ -60,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
             public void onExpenseClick(int position) {
                 Expense clickedExpense = expenseList.get(position);
                 Intent intent = new Intent(MainActivity.this, EditExpense.class);
-                intent.putExtra("expense", clickedExpense);
+                intent.putExtra("expense", (Parcelable) clickedExpense);
                 intent.putExtra("position", position);
                 startActivityForResult(intent, REQUEST_CODE_EDIT_EXPENSE);
             }
@@ -97,6 +106,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+
+    private void generateRecyclerView()
+    {
+        int size = expenseList.size();
+        for(int i = 0; i < size; i++) {
+            expenseAdapter.notifyItemInserted(i);
+        }
+    }
+
+
+
     private void updateExpenses()
     {
         total = findViewById(R.id.total_value_id);
@@ -115,6 +135,7 @@ public class MainActivity extends AppCompatActivity {
         expenseList.add(expense);
         expenseAdapter.notifyItemInserted(expenseList.size() - 1);
         updateExpenses();
+        PreferenceManager.saveExpenses(this, expenseList);
     }
 
 
@@ -122,11 +143,10 @@ public class MainActivity extends AppCompatActivity {
     private void changeExpense(int position, Expense expense)
     {
         expenseList.remove(position);
-        //expenseAdapter.notifyItemRemoved(position);
         expenseList.add(position, expense);
-        //expenseAdapter.notifyItemInserted(position);
         expenseAdapter.notifyItemChanged(position);
         updateExpenses();
+        PreferenceManager.saveExpenses(this, expenseList);
     }
 
 
@@ -136,11 +156,12 @@ public class MainActivity extends AppCompatActivity {
         expenseList.remove(position);
         expenseAdapter.notifyItemRemoved(position);
         updateExpenses();
+        PreferenceManager.saveExpenses(this, expenseList);
     }
 
 
 
-    public String getTotalValueStr()
+    private String getTotalValueStr()
     {
         if (expenseList.isEmpty()) {
             return "$0";
@@ -158,7 +179,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    public String getDailyAverageStr()
+    private String getDailyAverageStr()
     {
         if (expenseList.isEmpty()) {
             return "$0";
@@ -181,7 +202,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    public String getMonthlyAverageStr()
+    private String getMonthlyAverageStr()
     {
         if (expenseList.isEmpty()) {
             return "$0";

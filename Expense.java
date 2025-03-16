@@ -4,7 +4,9 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.widget.EditText;
 
-public class Expense implements Parcelable{
+import java.io.Serializable;
+
+public class Expense implements Parcelable, Serializable {
     private String label;
     private Date date;
     private int cost;

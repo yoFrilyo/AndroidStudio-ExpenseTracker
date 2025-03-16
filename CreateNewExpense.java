@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.app.AlertDialog;
 import android.os.Bundle;
 import android.app.DatePickerDialog;
+import android.os.Parcelable;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -44,7 +45,7 @@ public class CreateNewExpense extends AppCompatActivity {
         confirmButton.setOnClickListener(v -> {
             Expense expense = new Expense(label, date, cost, reason, notes);
             Intent resultIntent = new Intent();
-            resultIntent.putExtra("expense", expense);
+            resultIntent.putExtra("expense", (Parcelable) expense);
             setResult(RESULT_OK, resultIntent);
             finish();
         });

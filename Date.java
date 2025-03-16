@@ -3,7 +3,9 @@ package com.example.assignment2;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class Date implements Parcelable {
+import java.io.Serializable;
+
+public class Date implements Parcelable, Serializable {
     public int day;
     public int month;
     public int year;

@@ -3,6 +3,7 @@ package com.example.assignment2;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -57,7 +58,7 @@ public class EditExpense extends AppCompatActivity {
         confirmButton.setOnClickListener(v -> {
             Expense newExpense = new Expense(label, date, cost, reason, notes);
             Intent resultIntent = new Intent();
-            resultIntent.putExtra("expense", newExpense);
+            resultIntent.putExtra("expense", (Parcelable) newExpense);
             resultIntent.putExtra("position", position);
             setResult(RESULT_OK, resultIntent);
             finish();
